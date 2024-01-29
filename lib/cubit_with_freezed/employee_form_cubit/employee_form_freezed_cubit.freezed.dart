@@ -16,19 +16,20 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$EmployeeFormFreezedState {
+  bool get isValidate => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function(bool isValidate) initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function(bool isValidate)? initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function(bool isValidate)? initial,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -48,6 +49,10 @@ mixin _$EmployeeFormFreezedState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $EmployeeFormFreezedStateCopyWith<EmployeeFormFreezedState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -55,6 +60,8 @@ abstract class $EmployeeFormFreezedStateCopyWith<$Res> {
   factory $EmployeeFormFreezedStateCopyWith(EmployeeFormFreezedState value,
           $Res Function(EmployeeFormFreezedState) then) =
       _$EmployeeFormFreezedStateCopyWithImpl<$Res, EmployeeFormFreezedState>;
+  @useResult
+  $Res call({bool isValidate});
 }
 
 /// @nodoc
@@ -67,13 +74,30 @@ class _$EmployeeFormFreezedStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isValidate = null,
+  }) {
+    return _then(_value.copyWith(
+      isValidate: null == isValidate
+          ? _value.isValidate
+          : isValidate // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
+abstract class _$$InitialImplCopyWith<$Res>
+    implements $EmployeeFormFreezedStateCopyWith<$Res> {
   factory _$$InitialImplCopyWith(
           _$InitialImpl value, $Res Function(_$InitialImpl) then) =
       __$$InitialImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({bool isValidate});
 }
 
 /// @nodoc
@@ -83,51 +107,77 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? isValidate = null,
+  }) {
+    return _then(_$InitialImpl(
+      isValidate: null == isValidate
+          ? _value.isValidate
+          : isValidate // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+  const _$InitialImpl({this.isValidate = false});
+
+  @override
+  @JsonKey()
+  final bool isValidate;
 
   @override
   String toString() {
-    return 'EmployeeFormFreezedState.initial()';
+    return 'EmployeeFormFreezedState.initial(isValidate: $isValidate)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$InitialImpl &&
+            (identical(other.isValidate, isValidate) ||
+                other.isValidate == isValidate));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, isValidate);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      __$$InitialImplCopyWithImpl<_$InitialImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
+    required TResult Function(bool isValidate) initial,
   }) {
-    return initial();
+    return initial(isValidate);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
+    TResult? Function(bool isValidate)? initial,
   }) {
-    return initial?.call();
+    return initial?.call(isValidate);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
+    TResult Function(bool isValidate)? initial,
     required TResult orElse(),
   }) {
     if (initial != null) {
-      return initial();
+      return initial(isValidate);
     }
     return orElse();
   }
@@ -162,5 +212,12 @@ class _$InitialImpl implements _Initial {
 }
 
 abstract class _Initial implements EmployeeFormFreezedState {
-  const factory _Initial() = _$InitialImpl;
+  const factory _Initial({final bool isValidate}) = _$InitialImpl;
+
+  @override
+  bool get isValidate;
+  @override
+  @JsonKey(ignore: true)
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

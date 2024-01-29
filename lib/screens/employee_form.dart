@@ -17,8 +17,6 @@ class EmployeeForm extends StatelessWidget {
     final Map? editEmployee =
         ModalRoute.of(context)!.settings.arguments as Map?;
 
-    //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
     TextEditingController nameController = TextEditingController();
     TextEditingController joiningDateController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
@@ -67,81 +65,100 @@ class EmployeeForm extends StatelessWidget {
                     EmployeeFormFreezedState>(
                   builder:
                       (BuildContext context, EmployeeFormFreezedState state) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        commonTextFiled(
-                          controller: nameController,
-                          keyboardType: TextInputType.name,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                              RegExp("[a-zA-Z ]"),
-                            ),
-                          ],
-                          textFiledText: 'Name',
-                          hintText: 'Enter Name',
-                          prefixIcon: Icons.person,
-                        ),
-                        heightSizeBox(20),
-                        commonTextFiled(
-                          controller: joiningDateController,
-                          textFiledText: 'Joining Date',
-                          hintText: 'Choose Date',
-                          prefixIcon: Icons.date_range,
-                          readOnly: true,
-                          onTap: () {
-                            showDatePickerFunction();
-                          },
-                        ),
-                        heightSizeBox(20),
-                        commonTextFiled(
-                          controller: phoneController,
-                          textFiledText: 'Mobile Number',
-                          hintText: 'Enter Number',
-                          prefixIcon: Icons.mobile_friendly,
-                          keyboardType: TextInputType.phone,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          maxLength: 10,
-                        ),
-                        heightSizeBox(30),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              bool check = editEmployee == null
-                                  ? await employeeFormCubit
-                                      .addAndEditEmployeeDetails(
-                                      name: nameController.text,
-                                      joiningDate: joiningDateController.text,
-                                      phoneNumber: phoneController.text,
-                                    )
-                                  : await employeeFormCubit
-                                      .addAndEditEmployeeDetails(
-                                      name: nameController.text,
-                                      joiningDate: joiningDateController.text,
-                                      phoneNumber: phoneController.text,
-                                      id: editEmployee['id'],
-                                    );
-
-                              if (check) {
-                                if (!context.mounted) return;
-                                Navigator.of(context).pop();
-                              } else {
-                                if (!context.mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Employee Details Not Add'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              }
+                    return Form(
+                      key: employeeFormCubit.formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          commonTextFiled(
+                            controller: nameController,
+                            keyboardType: TextInputType.name,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                RegExp("[a-zA-Z ]"),
+                              ),
+                            ],
+                            textFiledText: 'Name',
+                            hintText: 'Enter Name',
+                            prefixIcon: Icons.person,
+                            validator: (String? value) {
+                              return employeeFormCubit.nameValidation(value);
                             },
-                            child:
-                                Text(editEmployee == null ? 'Submit' : 'Edit'),
                           ),
-                        ),
-                      ],
+                          heightSizeBox(20),
+                          commonTextFiled(
+                            controller: joiningDateController,
+                            textFiledText: 'Joining Date',
+                            hintText: 'Choose Date',
+                            prefixIcon: Icons.date_range,
+                            validator: (String? value) {
+                              return employeeFormCubit
+                                  .joiningDateValidation(value);
+                            },
+                            readOnly: true,
+                            onTap: () {
+                              showDatePickerFunction();
+                            },
+                          ),
+                          heightSizeBox(20),
+                          commonTextFiled(
+                            controller: phoneController,
+                            textFiledText: 'Mobile Number',
+                            hintText: 'Enter Number',
+                            prefixIcon: Icons.mobile_friendly,
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            maxLength: 10,
+                            validator: (String? value) {
+                              return employeeFormCubit.mobileValidation(value);
+                            },
+                          ),
+                          heightSizeBox(30),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (employeeFormCubit.formKey.currentState!
+                                    .validate()) {
+                                  bool check = editEmployee == null
+                                      ? await employeeFormCubit
+                                          .addAndEditEmployeeDetails(
+                                          name: nameController.text,
+                                          joiningDate:
+                                              joiningDateController.text,
+                                          phoneNumber: phoneController.text,
+                                        )
+                                      : await employeeFormCubit
+                                          .addAndEditEmployeeDetails(
+                                          name: nameController.text,
+                                          joiningDate:
+                                              joiningDateController.text,
+                                          phoneNumber: phoneController.text,
+                                          id: editEmployee['id'],
+                                        );
+
+                                  if (check) {
+                                    if (!context.mounted) return;
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    if (!context.mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content:
+                                            Text('Employee Details Not Add'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                              child: Text(
+                                  editEmployee == null ? 'Submit' : 'Edit'),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),

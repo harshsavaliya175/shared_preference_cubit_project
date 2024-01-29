@@ -77,6 +77,7 @@ class RegisterFreezedCubit extends Cubit<RegisterFreezedState> {
       state.copyWith(
         employeeDataList: employeeList,
         isDeleted: true,
+        isDataNotFound: employeeList.isEmpty,
       ),
     );
   }

@@ -31,7 +31,6 @@ class RegisterScreen extends StatelessWidget {
         listener: (BuildContext context, RegisterFreezedState state) {
           if (state.isDeleted) {
             Navigator.of(context).pop();
-            //registerFreezedCubit.getEmployeeData();
           }
         },
         buildWhen:
