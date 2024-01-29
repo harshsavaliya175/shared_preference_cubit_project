@@ -6,5 +6,6 @@ class RegisterFreezedState with _$RegisterFreezedState {
     @Default([]) List employeeDataList,
     @Default(false) bool isLoading,
     @Default(false) bool isDataNotFound,
+    @Default(false) bool isDeleted,
   }) = _Initial;
 }

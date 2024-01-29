@@ -12,11 +12,12 @@ part 'employee_form_freezed_state.dart';
 class EmployeeFormFreezedCubit extends Cubit<EmployeeFormFreezedState> {
   EmployeeFormFreezedCubit() : super(const EmployeeFormFreezedState.initial());
 
-  void addEmployeeDetails({
+  Future<bool> addAndEditEmployeeDetails({
     required String name,
     required String joiningDate,
     required String phoneNumber,
-  }) {
+    int? id,
+  }) async {
     List employeeDataList = [];
 
     String employeeDataString =
@@ -30,16 +31,21 @@ class EmployeeFormFreezedCubit extends Cubit<EmployeeFormFreezedState> {
 
     if (employeeDataString != '') {
       employeeDataList = jsonDecode(employeeDataString);
-      employeeDataList.add(employeeDetailsMap);
+
+      if (id != null) {
+        employeeDataList[id] = employeeDetailsMap;
+      } else {
+        employeeDataList.add(employeeDetailsMap);
+      }
     } else {
       employeeDataList.add(employeeDetailsMap);
     }
 
-    PreferenceService.setValue(
+    bool isDone = await PreferenceService.setValue(
       key: PreferenceKey.employeesDetails,
       value: jsonEncode(employeeDataList),
     );
 
-    emit(const EmployeeFormFreezedState.initial());
+    return isDone;
   }
 }

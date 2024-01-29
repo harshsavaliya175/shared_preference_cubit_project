@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preference_cubit_project/common/width_size_box.dart';
@@ -26,8 +27,15 @@ class RegisterScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Employee Register ( Records )'),
       ),
-      body: BlocBuilder<RegisterFreezedCubit, RegisterFreezedState>(
-        buildWhen: (previous, current) {
+      body: BlocConsumer<RegisterFreezedCubit, RegisterFreezedState>(
+        listener: (BuildContext context, RegisterFreezedState state) {
+          if (state.isDeleted) {
+            Navigator.of(context).pop();
+            //registerFreezedCubit.getEmployeeData();
+          }
+        },
+        buildWhen:
+            (RegisterFreezedState previous, RegisterFreezedState current) {
           return previous != current;
         },
         builder: (BuildContext context, RegisterFreezedState state) {
@@ -51,10 +59,84 @@ class RegisterScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              employeeDetails(
-                                icon: Icons.perm_contact_cal_outlined,
-                                title:
-                                    '${(state.employeeDataList[index]['name']).toUpperCase()}',
+                              Row(
+                                children: [
+                                  employeeDetails(
+                                    icon: Icons.perm_contact_cal_outlined,
+                                    title:
+                                        '${(state.employeeDataList[index]['name']).toUpperCase()}',
+                                  ),
+                                  const Spacer(),
+                                  PopupMenuButton(
+                                    onSelected: (String value) {
+                                      if (value == RouteNames.employeeForm) {
+                                        state.employeeDataList[index]['id'] =
+                                            index;
+                                        Navigator.of(context)
+                                            .pushNamed(
+                                          RouteNames.employeeForm,
+                                          arguments:
+                                              state.employeeDataList[index],
+                                        )
+                                            .then(
+                                          (value) {
+                                            registerFreezedCubit
+                                                .getEmployeeData();
+                                          },
+                                        );
+                                      } else if (value == 'Delete') {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return CupertinoAlertDialog(
+                                              title: const Text(
+                                                "Are you sure DELETE this record ?",
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    registerFreezedCubit
+                                                        .deleteEmployeeRecord(
+                                                            index);
+                                                  },
+                                                  child: const Text(
+                                                    'YES',
+                                                    style: TextStyle(
+                                                      color: Colors.green,
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text(
+                                                    'NO',
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                    itemBuilder: (BuildContext context) {
+                                      return [
+                                        PopupMenuItem(
+                                          value: RouteNames.employeeForm,
+                                          child: const Text("Edit"),
+                                        ),
+                                        const PopupMenuItem(
+                                          value: 'Delete',
+                                          child: Text("Delete"),
+                                        ),
+                                      ];
+                                    },
+                                  )
+                                ],
                               ),
                               heightSizeBox(5),
                               employeeDetails(

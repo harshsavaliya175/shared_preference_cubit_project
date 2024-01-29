@@ -14,14 +14,32 @@ class EmployeeForm extends StatelessWidget {
     EmployeeFormFreezedCubit employeeFormCubit =
         BlocProvider.of<EmployeeFormFreezedCubit>(context);
 
+    final Map? editEmployee =
+        ModalRoute.of(context)!.settings.arguments as Map?;
+
+    //final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
     TextEditingController nameController = TextEditingController();
     TextEditingController joiningDateController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
+    DateTime dateTime = DateTime.now();
+
+    if (editEmployee != null) {
+      nameController.text = editEmployee['name'];
+      joiningDateController.text = editEmployee['joiningDate'];
+      phoneController.text = editEmployee['phoneNumber'];
+      if (editEmployee['joiningDate'] != '') {
+        dateTime = DateTime.parse(editEmployee['joiningDate']);
+      }
+    }
 
     Future<void> showDatePickerFunction() async {
+      if (joiningDateController.text != '') {
+        dateTime = DateTime.parse(joiningDateController.text);
+      }
       DateTime? pickedDate = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: dateTime,
         firstDate: DateTime(2023),
         lastDate: DateTime.now(),
       );
@@ -36,10 +54,7 @@ class EmployeeForm extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Employee Form'),
       ),
-      body: BlocConsumer<EmployeeFormFreezedCubit, EmployeeFormFreezedState>(
-        listener: (BuildContext context, EmployeeFormFreezedState state) {
-          Navigator.of(context).pop();
-        },
+      body: BlocBuilder<EmployeeFormFreezedCubit, EmployeeFormFreezedState>(
         builder: (BuildContext context, EmployeeFormFreezedState state) {
           return GestureDetector(
             onTap: () {
@@ -60,7 +75,7 @@ class EmployeeForm extends StatelessWidget {
                           keyboardType: TextInputType.name,
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.allow(
-                              RegExp("[a-zA-Z]"),
+                              RegExp("[a-zA-Z ]"),
                             ),
                           ],
                           textFiledText: 'Name',
@@ -88,18 +103,42 @@ class EmployeeForm extends StatelessWidget {
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly,
                           ],
+                          maxLength: 10,
                         ),
                         heightSizeBox(30),
                         Center(
                           child: ElevatedButton(
-                            onPressed: () {
-                              employeeFormCubit.addEmployeeDetails(
-                                name: nameController.text,
-                                joiningDate: joiningDateController.text,
-                                phoneNumber: phoneController.text,
-                              );
+                            onPressed: () async {
+                              bool check = editEmployee == null
+                                  ? await employeeFormCubit
+                                      .addAndEditEmployeeDetails(
+                                      name: nameController.text,
+                                      joiningDate: joiningDateController.text,
+                                      phoneNumber: phoneController.text,
+                                    )
+                                  : await employeeFormCubit
+                                      .addAndEditEmployeeDetails(
+                                      name: nameController.text,
+                                      joiningDate: joiningDateController.text,
+                                      phoneNumber: phoneController.text,
+                                      id: editEmployee['id'],
+                                    );
+
+                              if (check) {
+                                if (!context.mounted) return;
+                                Navigator.of(context).pop();
+                              } else {
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Employee Details Not Add'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
                             },
-                            child: const Text('Submit'),
+                            child:
+                                Text(editEmployee == null ? 'Submit' : 'Edit'),
                           ),
                         ),
                       ],

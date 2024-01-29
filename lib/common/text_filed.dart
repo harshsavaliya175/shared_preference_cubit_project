@@ -12,6 +12,7 @@ Widget commonTextFiled({
   String? Function(String?)? validator,
   void Function()? onTap,
   List<TextInputFormatter>? inputFormatters,
+  int? maxLength,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,6 +40,7 @@ Widget commonTextFiled({
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
         onTap: onTap,
+        maxLength: maxLength,
       ),
     ],
   );

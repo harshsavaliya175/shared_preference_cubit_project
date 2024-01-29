@@ -19,24 +19,25 @@ mixin _$RegisterFreezedState {
   List<dynamic> get employeeDataList => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isDataNotFound => throw _privateConstructorUsedError;
+  bool get isDeleted => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            List<dynamic> employeeDataList, bool isLoading, bool isDataNotFound)
+    required TResult Function(List<dynamic> employeeDataList, bool isLoading,
+            bool isDataNotFound, bool isDeleted)
         initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<dynamic> employeeDataList, bool isLoading,
-            bool isDataNotFound)?
+            bool isDataNotFound, bool isDeleted)?
         initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<dynamic> employeeDataList, bool isLoading,
-            bool isDataNotFound)?
+            bool isDataNotFound, bool isDeleted)?
         initial,
     required TResult orElse(),
   }) =>
@@ -70,7 +71,10 @@ abstract class $RegisterFreezedStateCopyWith<$Res> {
       _$RegisterFreezedStateCopyWithImpl<$Res, RegisterFreezedState>;
   @useResult
   $Res call(
-      {List<dynamic> employeeDataList, bool isLoading, bool isDataNotFound});
+      {List<dynamic> employeeDataList,
+      bool isLoading,
+      bool isDataNotFound,
+      bool isDeleted});
 }
 
 /// @nodoc
@@ -90,6 +94,7 @@ class _$RegisterFreezedStateCopyWithImpl<$Res,
     Object? employeeDataList = null,
     Object? isLoading = null,
     Object? isDataNotFound = null,
+    Object? isDeleted = null,
   }) {
     return _then(_value.copyWith(
       employeeDataList: null == employeeDataList
@@ -104,6 +109,10 @@ class _$RegisterFreezedStateCopyWithImpl<$Res,
           ? _value.isDataNotFound
           : isDataNotFound // ignore: cast_nullable_to_non_nullable
               as bool,
+      isDeleted: null == isDeleted
+          ? _value.isDeleted
+          : isDeleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -117,7 +126,10 @@ abstract class _$$InitialImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<dynamic> employeeDataList, bool isLoading, bool isDataNotFound});
+      {List<dynamic> employeeDataList,
+      bool isLoading,
+      bool isDataNotFound,
+      bool isDeleted});
 }
 
 /// @nodoc
@@ -134,6 +146,7 @@ class __$$InitialImplCopyWithImpl<$Res>
     Object? employeeDataList = null,
     Object? isLoading = null,
     Object? isDataNotFound = null,
+    Object? isDeleted = null,
   }) {
     return _then(_$InitialImpl(
       employeeDataList: null == employeeDataList
@@ -148,6 +161,10 @@ class __$$InitialImplCopyWithImpl<$Res>
           ? _value.isDataNotFound
           : isDataNotFound // ignore: cast_nullable_to_non_nullable
               as bool,
+      isDeleted: null == isDeleted
+          ? _value.isDeleted
+          : isDeleted // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -158,7 +175,8 @@ class _$InitialImpl implements _Initial {
   const _$InitialImpl(
       {final List<dynamic> employeeDataList = const [],
       this.isLoading = false,
-      this.isDataNotFound = false})
+      this.isDataNotFound = false,
+      this.isDeleted = false})
       : _employeeDataList = employeeDataList;
 
   final List<dynamic> _employeeDataList;
@@ -177,10 +195,13 @@ class _$InitialImpl implements _Initial {
   @override
   @JsonKey()
   final bool isDataNotFound;
+  @override
+  @JsonKey()
+  final bool isDeleted;
 
   @override
   String toString() {
-    return 'RegisterFreezedState.initial(employeeDataList: $employeeDataList, isLoading: $isLoading, isDataNotFound: $isDataNotFound)';
+    return 'RegisterFreezedState.initial(employeeDataList: $employeeDataList, isLoading: $isLoading, isDataNotFound: $isDataNotFound, isDeleted: $isDeleted)';
   }
 
   @override
@@ -193,7 +214,9 @@ class _$InitialImpl implements _Initial {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isDataNotFound, isDataNotFound) ||
-                other.isDataNotFound == isDataNotFound));
+                other.isDataNotFound == isDataNotFound) &&
+            (identical(other.isDeleted, isDeleted) ||
+                other.isDeleted == isDeleted));
   }
 
   @override
@@ -201,7 +224,8 @@ class _$InitialImpl implements _Initial {
       runtimeType,
       const DeepCollectionEquality().hash(_employeeDataList),
       isLoading,
-      isDataNotFound);
+      isDataNotFound,
+      isDeleted);
 
   @JsonKey(ignore: true)
   @override
@@ -212,33 +236,34 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            List<dynamic> employeeDataList, bool isLoading, bool isDataNotFound)
+    required TResult Function(List<dynamic> employeeDataList, bool isLoading,
+            bool isDataNotFound, bool isDeleted)
         initial,
   }) {
-    return initial(employeeDataList, isLoading, isDataNotFound);
+    return initial(employeeDataList, isLoading, isDataNotFound, isDeleted);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<dynamic> employeeDataList, bool isLoading,
-            bool isDataNotFound)?
+            bool isDataNotFound, bool isDeleted)?
         initial,
   }) {
-    return initial?.call(employeeDataList, isLoading, isDataNotFound);
+    return initial?.call(
+        employeeDataList, isLoading, isDataNotFound, isDeleted);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<dynamic> employeeDataList, bool isLoading,
-            bool isDataNotFound)?
+            bool isDataNotFound, bool isDeleted)?
         initial,
     required TResult orElse(),
   }) {
     if (initial != null) {
-      return initial(employeeDataList, isLoading, isDataNotFound);
+      return initial(employeeDataList, isLoading, isDataNotFound, isDeleted);
     }
     return orElse();
   }
@@ -276,7 +301,8 @@ abstract class _Initial implements RegisterFreezedState {
   const factory _Initial(
       {final List<dynamic> employeeDataList,
       final bool isLoading,
-      final bool isDataNotFound}) = _$InitialImpl;
+      final bool isDataNotFound,
+      final bool isDeleted}) = _$InitialImpl;
 
   @override
   List<dynamic> get employeeDataList;
@@ -284,6 +310,8 @@ abstract class _Initial implements RegisterFreezedState {
   bool get isLoading;
   @override
   bool get isDataNotFound;
+  @override
+  bool get isDeleted;
   @override
   @JsonKey(ignore: true)
   _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>

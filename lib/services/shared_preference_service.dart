@@ -7,17 +7,19 @@ class PreferenceService {
     _preferences = await SharedPreferences.getInstance();
   }
 
-  static Future<void> setValue({required String key, dynamic value}) async {
+  static Future<bool> setValue({required String key, dynamic value}) async {
     if (value is String) {
-      await _preferences!.setString(key, value);
+      return await _preferences!.setString(key, value);
     } else if (value is bool) {
-      await _preferences!.setBool(key, value);
+      return await _preferences!.setBool(key, value);
     } else if (value is int) {
-      await _preferences!.setInt(key, value);
+      return await _preferences!.setInt(key, value);
     } else if (value is double) {
-      await _preferences!.setDouble(key, value);
+      return await _preferences!.setDouble(key, value);
     } else if (value is List<String>) {
-      await _preferences!.setStringList(key, value);
+      return await _preferences!.setStringList(key, value);
+    } else {
+      return false;
     }
   }
 

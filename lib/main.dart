@@ -39,8 +39,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: RouteNames.registerScreen,
       routes: {
-        RouteNames.registerScreen: (context) => const RegisterScreen(),
-        RouteNames.employeeForm: (context) => const EmployeeForm(),
+        RouteNames.registerScreen: (BuildContext context) =>
+            const RegisterScreen(),
+        RouteNames.employeeForm: (BuildContext context) => const EmployeeForm(),
       },
     );
   }

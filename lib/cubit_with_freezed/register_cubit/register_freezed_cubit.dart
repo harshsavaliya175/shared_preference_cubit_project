@@ -26,10 +26,10 @@ class RegisterFreezedCubit extends Cubit<RegisterFreezedState> {
 
       if (employeeDataList.isEmpty) {
         Future.delayed(
-          const Duration(seconds: 3),
+          const Duration(seconds: 1),
           () {
             emit(
-              const RegisterFreezedState.initial(
+              state.copyWith(
                 isDataNotFound: true,
                 isLoading: false,
               ),
@@ -37,20 +37,25 @@ class RegisterFreezedCubit extends Cubit<RegisterFreezedState> {
           },
         );
       } else {
-        emit(
-          RegisterFreezedState.initial(
-            employeeDataList: employeeDataList,
-            isLoading: false,
-            isDataNotFound: false,
-          ),
+        Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            emit(
+              state.copyWith(
+                employeeDataList: employeeDataList,
+                isLoading: false,
+                isDataNotFound: false,
+              ),
+            );
+          },
         );
       }
     } else {
       Future.delayed(
-        const Duration(seconds: 3),
+        const Duration(seconds: 1),
         () {
           emit(
-            const RegisterFreezedState.initial(
+            state.copyWith(
               isDataNotFound: true,
               isLoading: false,
             ),
@@ -58,5 +63,21 @@ class RegisterFreezedCubit extends Cubit<RegisterFreezedState> {
         },
       );
     }
+  }
+
+  void deleteEmployeeRecord(int index) {
+    List employeeList = List.from(state.employeeDataList);
+    employeeList.removeAt(index);
+    PreferenceService.setValue(
+      key: PreferenceKey.employeesDetails,
+      value: jsonEncode(employeeList),
+    );
+
+    emit(
+      state.copyWith(
+        employeeDataList: employeeList,
+        isDeleted: true,
+      ),
+    );
   }
 }
